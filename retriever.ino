@@ -3,7 +3,6 @@
 int a = 0;
 int value0;
 int value;
-int maxlen = EEPROM.length();
 
 void setup()
 {
@@ -18,17 +17,18 @@ void loop()
   Serial.print(value0);
   for (int i = 1 ; i < 5 ; i++)
     {
-      if((a + i) >= maxlen) {
+      if((a + i) >= EEPROM.length()) {
         Serial.print("memory limit exceeded while reading, clearing memory");
         delay(2000);
-    for (int i = 0 ; i < maxlen ; i++)
+    for (int i = 0 ; i < EEPROM.length() ; i++)
     {
     EEPROM.write(i, 0);
     }
     Serial.print("cleared memory");
         }
-  if((a + i) < maxlen) {
-  value = value0 + EEPROM.read(a + i);
+  if(a < EEPROM.length()) {
+    a = a + i;
+  value = EEPROM.read(a);
   Serial.print("\t");
   Serial.print(value);
     }
@@ -37,7 +37,7 @@ void loop()
   if (value == 255 ){
     Serial.print("reached limit so abort, clearing the memory");
     delay(2000);
-    for (int i = 0 ; i < maxlen ; i++)
+    for (int i = 0 ; i < EEPROM.length() ; i++)
     {
     EEPROM.write(i, 0);
     }
@@ -46,10 +46,10 @@ void loop()
   
   a = a + 1;
 
-  if (a == maxlen){
+  if (a == EEPROM.length()){
     Serial.print("memory limit exceeded, clearing memory");
     delay(2000);
-    for (int i = 0 ; i < maxlen ; i++)
+    for (int i = 0 ; i < EEPROM.length() ; i++)
     {
     EEPROM.write(i, 0);
     }
@@ -57,5 +57,5 @@ void loop()
     a = 0;
   }
 
-  delay(500);
+  delay(10);
 }
