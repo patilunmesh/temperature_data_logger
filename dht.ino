@@ -5,7 +5,7 @@
 #define dht_dpin A3
 #define dht_epin A4
 
-// Analog Pin sensor is connected to
+// Analog Pin sensor is connected to A0, A1, A2, A3, A4
 #include <EEPROM.h>
 
 dht DHT;
@@ -16,7 +16,7 @@ void setup(){
  
   Serial.begin(9600);
   delay(500);//Delay to let system boot
-  Serial.println("DHT11 Humidity & temperature Sensor\n\n");
+  Serial.println("DHT11 Humidity & temperature Sensor\n\n"); // if this is printed then all gud
   delay(1000);//Wait before accessing Sensor
  
 }//end "setup()"
@@ -27,29 +27,41 @@ void loop(){
     DHT.read11(dht_apin);
     val1 = DHT.temperature;
         EEPROM.write(addr, val1);
+        // Serial.print(val1); // uncomment to see values in runtime
+        // Serial.print("\t"); // uncomment to see values in runtime
         addr = addr + 1;
         
     DHT.read11(dht_bpin);
-    val2 = DHT.temperature - val1 ;
+    val2 = DHT.temperature  ;
          EEPROM.write(addr, val2);
          addr = addr + 1;
+        // Serial.print(val2); // uncomment to see values in runtime
+        // Serial.print("\t"); // uncomment to see values in runtime
     DHT.read11(dht_cpin);
-    val3 = DHT.temperature - val1 ;
+    val3 = DHT.temperature ;
          EEPROM.write(addr, val3);
+        // Serial.print(val3); // uncomment to see values in runtime
+         // Serial.print("\t"); // uncomment to see values in runtime
          addr = addr + 1;
     DHT.read11(dht_dpin);
-    val4 = DHT.temperature - val1 ;
+    val4 = DHT.temperature  ;
         EEPROM.write(addr, val4);
+       // Serial.print(val4); // uncomment to see values in runtime
+        // Serial.print("\t");  // uncomment to see values in runtime
         addr = addr + 1;
     DHT.read11(dht_epin);
-    val5 = DHT.temperature - val1 ;
+    val5 = DHT.temperature  ;
          EEPROM.write(addr, val5);
+        // Serial.print(val5);  // uncomment to see values in runtime
+         // Serial.print("\t");  // uncomment to see values in runtime
          addr = addr + 1;
  }
-   
-  if (addr == maxlen) {
+
+ // Serial.println("recorded\n");
+ //   Serial.print("\n");
+  if (addr >= (maxlen - 4)) {
     addr = 0;}
-    delay(5000);//Wait 5 seconds before accessing sensor again.
+    delay(600000); //Wait 10 minutes before accessing sensor again. for any other time 60000*minutes can be added here
  
  
 }// end loop()
