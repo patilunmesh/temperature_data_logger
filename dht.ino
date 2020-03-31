@@ -51,7 +51,7 @@ void loop(){
         EEPROM.write(addr, DHT.humidity);
         addr = addr + 1;
  }
-  if (addr >= (maxlen - 4)) {
+  if (addr >= (maxlen - 10)) {
     addr = 0;}
     delay(600000); //Wait 10 minutes before accessing sensor again. for any other time 60000*minutes can be added here 
 }
